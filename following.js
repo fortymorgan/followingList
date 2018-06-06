@@ -29,7 +29,7 @@ const render = async username => {
   currentUser.appendChild(currentUserAvatar);
 
   const currentUserHeader = document.createElement('span');
-  currentUserHeader.innerText = `User ${username} following:`;
+  currentUserHeader.innerHTML = `<span class="username">${username}</span> following:`;
 
   currentUser.appendChild(currentUserHeader);
 
@@ -48,6 +48,7 @@ const render = async username => {
     listItem.appendChild(userAvatar);
 
     const username = document.createElement('span');
+    username.classList.add('username');
     username.innerText = item.login;
   
     listItem.appendChild(username);
