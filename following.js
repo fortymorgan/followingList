@@ -3,58 +3,71 @@ const button = document.querySelector('.search-button');
 const currentUser = document.querySelector('.current-user');
 const followingList = document.querySelector('.following');
 
-button.addEventListener('click', () => render(input.value));
+button.addEventListener('click', () => pushHistoryState(input.value));
 input.addEventListener('keydown', (event) => {
   if (event.keyCode === 13) {
-    render(input.value);
+    pushHistoryState(input.value);
   }
 });
+
+window.onpopstate = () => render();
+
+const pushHistoryState = user => {
+  const state = { user };
+  const title = `${user} followings`;
+  history.pushState(state, title);
+  render();
+};
 
 const resetList = () => {
   currentUser.innerHTML = '';
   followingList.innerHTML = '';
   input.value = '';
-}
+};
 
-const render = async username => {
-  resetList();
+const getUserData = async () => {
+  const username = history.state.user;
   const userLink = `https://api.github.com/users/${username}`;
-  const currentUserData = await fetch(userLink)
+  const userData = await fetch(userLink)
     .then(blob => blob.json());
 
-  const currentUserAvatar = document.createElement('img');
-  currentUserAvatar.src = currentUserData.avatar_url;
-  currentUserAvatar.height = 40;
+  return userData;
+};
 
-  currentUser.appendChild(currentUserAvatar);
+const createAvatarImg = (src, height = '') => `<img src="${src}" height="${height}">`;
+const createUsernameSpan = (username) => `<span class="username">${username}</span>`;
 
-  const currentUserHeader = document.createElement('span');
-  currentUserHeader.innerHTML = `<span class="username">${username}</span> following:`;
+const render = async () => {
+  resetList();
+  
+  if (!history.state) {
+    return;
+  }
 
-  currentUser.appendChild(currentUserHeader);
+  const { avatar_url, following_url, login } = await getUserData();
 
-  const [followingUrl] = currentUserData.following_url.split('{');
+  const currentUserAvatar = createAvatarImg(avatar_url, 40);
+  const currentUserHeader = `<span>${createUsernameSpan(login)} following:</span>`;
+
+  currentUser.innerHTML = currentUserAvatar + currentUserHeader;
+
+  const [followingUrl] = following_url.split('{');
 
   const currentUserFollowingList = await fetch(followingUrl)
     .then(blob => blob.json());
 
-  currentUserFollowingList.forEach(item => {
+  currentUserFollowingList.forEach(({ avatar_url, login }) => {
     const listItem = document.createElement('li');
 
-    const userAvatar = document.createElement('img');
-    userAvatar.src = item.avatar_url;
-    userAvatar.height = 20;
+    const userAvatar = createAvatarImg(avatar_url, 20);
+    const username = createUsernameSpan(login);
   
-    listItem.appendChild(userAvatar);
+    listItem.innerHTML = userAvatar + username;
 
-    const username = document.createElement('span');
-    username.classList.add('username');
-    username.innerText = item.login;
-  
-    listItem.appendChild(username);
+    listItem.addEventListener('click', () => pushHistoryState(login));
 
-    listItem.addEventListener('click', () => render(item.login));
-
-    followingList.appendChild(listItem);
+    followingList.append(listItem);
   });
-}
+};
+
+render();
