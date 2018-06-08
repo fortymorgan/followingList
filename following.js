@@ -37,9 +37,22 @@ const getUserData = async () => {
 const createAvatarImg = (src, height = '') => `<img src="${src}" height="${height}">`;
 const createUsernameSpan = (username) => `<span class="username">${username}</span>`;
 
+const createFollowingListHtml = ({ avatar_url, login }) => {
+  const listItem = document.createElement('li');
+
+  const userAvatar = createAvatarImg(avatar_url, 20);
+  const username = createUsernameSpan(login);
+
+  listItem.innerHTML = userAvatar + username;
+
+  listItem.addEventListener('click', () => pushHistoryState(login));
+
+  followingList.append(listItem);
+};
+
 const render = async () => {
   resetList();
-  
+
   if (!history.state) {
     return;
   }
@@ -56,18 +69,7 @@ const render = async () => {
   const currentUserFollowingList = await fetch(followingUrl)
     .then(blob => blob.json());
 
-  currentUserFollowingList.forEach(({ avatar_url, login }) => {
-    const listItem = document.createElement('li');
-
-    const userAvatar = createAvatarImg(avatar_url, 20);
-    const username = createUsernameSpan(login);
-  
-    listItem.innerHTML = userAvatar + username;
-
-    listItem.addEventListener('click', () => pushHistoryState(login));
-
-    followingList.append(listItem);
-  });
+  createFollowingListHtml(currentUserFollowingList);
 };
 
 render();
