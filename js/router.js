@@ -1,4 +1,4 @@
-const router = (routes) => {
+module.exports = (routes) => {
   const hashValue = location.hash.slice(1);
 
   const currentRoute = routes.find(route => route.path === hashValue);
