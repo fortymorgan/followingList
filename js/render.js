@@ -3,7 +3,7 @@ const routes = require('./routes');
 // const renderSearchResult = require('./searchResult');
 // const resetList = require('./resetList');
 
-module.exports = () => {
+module.exports.render = () => {
   // resetList();
   // if (!location.hash) {
   //   return;

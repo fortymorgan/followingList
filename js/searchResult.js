@@ -1,3 +1,5 @@
+const pushHistoryState = require('./pushHistory');
+const render = require('./render');
 // console.log('search');
 // console.log(render);
 const createAvatarImg = (src, height = '') => `<img src="${src}" height="${height}">`;
@@ -15,8 +17,6 @@ const getUserData = async () => {
 
 const createFollowingListHtml = userFollowingList => {
   const followingList = document.querySelector('.following');
-  const pushHistoryState = require('./pushHistory');
-  const render = require('./render');
 
   userFollowingList.forEach(({ avatar_url, login }) => {
     const listItem = document.createElement('li');
@@ -29,7 +29,7 @@ const createFollowingListHtml = userFollowingList => {
     
     listItem.addEventListener('click', () => {
       pushHistoryState(login);
-      render();
+      render.render();
     });
     
     followingList.append(listItem);
