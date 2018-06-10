@@ -1,3 +1,6 @@
+const render = require('./render');
+const pushHistoryState = require('./pushHistory');
+
 const createAvatarImg = (src, height = '') => `<img src="${src}" height="${height}">`;
 const createUsernameSpan = (username) => `<span class="username">${username}</span>`;
 
@@ -19,7 +22,12 @@ const createFollowingListHtml = userFollowingList => {
     const userAvatar = createAvatarImg(avatar_url, 20);
     const username = createUsernameSpan(login);
     
-    listItem.innerHTML = `<a href="/following/${login}">${userAvatar + username}</a>`;
+    listItem.innerHTML = userAvatar + username;
+    
+    listItem.addEventListener('click', () => {
+      pushHistoryState('following', login);
+      render.render();
+    });
     
     followingList.append(listItem);
   });
