@@ -10,7 +10,5 @@ app.use('/static', (req, res) => {
 app.use('*', (req, res) => {
   res.sendFile(path.join(__dirname, "static/index.html"));
 });
-// app.use('/', express.static('static'));
-
 
 app.listen(3000);
