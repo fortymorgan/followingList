@@ -3,9 +3,7 @@ const path = require('path');
 
 const app = express();
 
-app.use('/static', (req, res) => {
-  res.sendFile(path.join(__dirname, "static" + req.path));
-});
+app.use('/static', express.static('static'));
 
 app.use('*', (req, res) => {
   res.sendFile(path.join(__dirname, "static/index.html"));
