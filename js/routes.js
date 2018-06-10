@@ -9,7 +9,7 @@ module.exports = [
     },
   },
   {
-    path: 'search',
+    path: 'following',
     component: () => {
       resetList();
       renderSearchResult();

@@ -1,7 +1,7 @@
 module.exports = (routes) => {
-  const hashValue = location.hash.slice(1);
+  const [_, resource] = location.pathname.split('/');
 
-  const currentRoute = routes.find(route => route.path === hashValue);
+  const currentRoute = routes.find(route => route.path === resource);
 
   currentRoute.component();
 };

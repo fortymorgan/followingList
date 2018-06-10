@@ -1,13 +1,8 @@
-const pushHistoryState = require('./pushHistory');
-const render = require('./render');
-// console.log('search');
-// console.log(render);
 const createAvatarImg = (src, height = '') => `<img src="${src}" height="${height}">`;
 const createUsernameSpan = (username) => `<span class="username">${username}</span>`;
 
 const getUserData = async () => {
-  // const username = location.hash.slice(1);
-  const username = history.state.user;
+  const [_, __, username] = location.pathname.split('/');
   const userLink = `https://api.github.com/users/${username}`;
   const userData = await fetch(userLink)
   .then(blob => blob.json());
@@ -24,13 +19,7 @@ const createFollowingListHtml = userFollowingList => {
     const userAvatar = createAvatarImg(avatar_url, 20);
     const username = createUsernameSpan(login);
     
-    listItem.innerHTML = userAvatar + username;
-    // listItem.innerHTML = `<a href="#${login}">${userAvatar + username}</a>`;
-    
-    listItem.addEventListener('click', () => {
-      pushHistoryState(login);
-      render.render();
-    });
+    listItem.innerHTML = `<a href="/following/${login}">${userAvatar + username}</a>`;
     
     followingList.append(listItem);
   });
