@@ -38,7 +38,7 @@ module.exports = async () => {
   const { avatar_url, following_url, login } = await getUserData();
   
   const currentUserAvatar = createAvatarImg(avatar_url, 40);
-  const currentUserHeader = `<span>${createUsernameSpan(login)} following:</span>`;
+  const currentUserHeader = `<span>${createUsernameSpan(login)} is following:</span>`;
   
   currentUser.innerHTML = currentUserAvatar + currentUserHeader;
 
