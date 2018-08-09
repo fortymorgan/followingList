@@ -1,5 +1,5 @@
 # GitHub following
-App for search whom GitHub user following with [GitHub API](https://developer.github.com/v3/).
+An app for searching for whom a GitHub user is following. Using [GitHub API](https://developer.github.com/v3/).
 
 ## Screenshots
 
