@@ -9,7 +9,7 @@ App for search whom GitHub user following with [GitHub API](https://developer.gi
 ## How to develop
 First you need to create `bundle.js` with:
 ```
-npm run build
+npm run watch
 ```
 Then, to run the app locally:
 ```
